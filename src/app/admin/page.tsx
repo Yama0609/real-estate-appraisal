@@ -1,20 +1,51 @@
-import { createClient } from '@/lib/supabase/server'
+'use client'
+
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { createClient } from '@/lib/supabase/client'
 
-export default async function AdminPage() {
-  const supabase = await createClient()
-  
-  // データベースの統計情報を取得
-  const [propertiesResult, appraisalsResult, investorsResult] = await Promise.all([
-    supabase.from('properties').select('*', { count: 'exact', head: true }),
-    supabase.from('appraisals').select('*', { count: 'exact', head: true }),
-    supabase.from('investors').select('*', { count: 'exact', head: true })
-  ])
+export default function AdminPage() {
+  const [stats, setStats] = useState({
+    properties: 0,
+    appraisals: 0,
+    investors: 0
+  })
+  const [loading, setLoading] = useState(true)
 
-  const stats = {
-    properties: propertiesResult.count || 0,
-    appraisals: appraisalsResult.count || 0,
-    investors: investorsResult.count || 0
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const supabase = createClient()
+        
+        const [propertiesResult, appraisalsResult, investorsResult] = await Promise.all([
+          supabase.from('properties').select('*', { count: 'exact', head: true }),
+          supabase.from('appraisals').select('*', { count: 'exact', head: true }),
+          supabase.from('investors').select('*', { count: 'exact', head: true })
+        ])
+
+        setStats({
+          properties: propertiesResult.count || 0,
+          appraisals: appraisalsResult.count || 0,
+          investors: investorsResult.count || 0
+        })
+      } catch (error) {
+        console.error('統計データ取得エラー:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchStats()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">読み込み中...</div>
+        </div>
+      </div>
+    )
   }
 
   return (

@@ -1,5 +1,8 @@
-import { createClient } from '@/lib/supabase/server'
+'use client'
+
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { createClient } from '@/lib/supabase/client'
 
 interface Property {
   id: string
@@ -17,18 +20,33 @@ interface Property {
   created_at: string
 }
 
-export default async function PropertiesPage() {
-  const supabase = await createClient()
-  
-  // 物件データを取得
-  const { data: properties, error } = await supabase
-    .from('properties')
-    .select('*')
-    .order('created_at', { ascending: false })
+export default function PropertiesPage() {
+  const [properties, setProperties] = useState<Property[]>([])
+  const [loading, setLoading] = useState(true)
 
-  if (error) {
-    console.error('物件データ取得エラー:', error)
-  }
+  useEffect(() => {
+    const fetchProperties = async () => {
+      try {
+        const supabase = createClient()
+        const { data: properties, error } = await supabase
+          .from('properties')
+          .select('*')
+          .order('created_at', { ascending: false })
+
+        if (error) {
+          console.error('物件データ取得エラー:', error)
+        } else {
+          setProperties(properties || [])
+        }
+      } catch (error) {
+        console.error('物件データ取得エラー:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchProperties()
+  }, [])
 
   // 判定色の取得
   const getYieldColor = (yield_rate: number) => {
@@ -41,6 +59,16 @@ export default async function PropertiesPage() {
     if (yield_rate >= 6.0) return '割安'
     if (yield_rate >= 5.0) return '適正'
     return '割高'
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">読み込み中...</div>
+        </div>
+      </div>
+    )
   }
 
   return (
