@@ -112,7 +112,7 @@ export class AppraisalLogic {
   /**
    * 徒歩分数を正規化する
    */
-  static normalizeWalkTime(walkTime: any): number {
+  static normalizeWalkTime(walkTime: unknown): number {
     if (typeof walkTime === 'number') {
       return walkTime;
     }

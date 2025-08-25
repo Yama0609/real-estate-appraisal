@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
 }
 
 // 一括査定API
-export async function PUT(request: NextRequest) {
+export async function PUT() {
   try {
     const supabase = createClient()
 

@@ -38,7 +38,7 @@ export default function AppraisePage() {
 
   useEffect(() => {
     fetchData()
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchData = async () => {
     try {
