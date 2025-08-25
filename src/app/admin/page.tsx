@@ -242,6 +242,28 @@ export default function AdminPage() {
             </div>
           </Link>
 
+          {/* データエディター */}
+          <Link href="/admin/data-editor" className="group">
+            <div className="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
+              <div className="p-6">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
+                    <span className="text-2xl">📊</span>
+                  </div>
+                  <h3 className="ml-4 text-lg font-medium text-gray-900 group-hover:text-indigo-600">
+                    データエディター
+                  </h3>
+                </div>
+                <p className="text-sm text-gray-500">
+                  スプレッドシート風の表編集で物件データを管理
+                </p>
+                <div className="mt-4 text-sm text-indigo-600 group-hover:text-indigo-800">
+                  エディターを開く →
+                </div>
+              </div>
+            </div>
+          </Link>
+
           {/* システム設定 */}
           <Link href="/admin/settings" className="group">
             <div className="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition-shadow duration-200">
