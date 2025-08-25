@@ -18,7 +18,7 @@ interface Property {
 }
 
 export default async function PropertiesPage() {
-  const supabase = createClient()
+  const supabase = await createClient()
   
   // 物件データを取得
   const { data: properties, error } = await supabase

@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 
 export default async function AdminPage() {
-  const supabase = createClient()
+  const supabase = await createClient()
   
   // データベースの統計情報を取得
   const [propertiesResult, appraisalsResult, investorsResult] = await Promise.all([

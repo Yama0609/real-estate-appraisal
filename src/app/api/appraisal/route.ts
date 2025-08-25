@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const supabase = createClient()
+    const supabase = await createClient()
 
     // 物件データを取得
     const { data: property, error: propertyError } = await supabase
@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
 // 一括査定API
 export async function PUT() {
   try {
-    const supabase = createClient()
+    const supabase = await createClient()
 
     // 査定結果がない物件を取得
     const { data: properties, error: propertiesError } = await supabase
